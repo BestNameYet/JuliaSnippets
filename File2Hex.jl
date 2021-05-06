@@ -1,27 +1,18 @@
 module File2Hex
 
-function arrayfactory()
-  return io -> Array{UInt8, 1}(undef, stat(io).size)
-end
+function arrayfactory end
+arrayfactory() = io -> Array{UInt8, 1}(undef, stat(io).size)
 
-function readerfactory()
-  arr = arrayfactory()
-  return io -> read!(io, arr(io))
-end
+function readerfactory() end
+readerfactory() = (arr = arrayfactory(); io -> read!(io, arr(io)))
 
-function openerfactory()
-  reader = readerfactory()
-  return fn -> open(reader, fn)
-end
+function openerfactory() end
+openerfactory() = (reader = readerfactory(); fn -> open(reader, fn))
 
-function hexerfactory()
-  opener = openerfactory()
-  return fn -> bytes2hex(opener(fn))
-end
+function hexerfactory() end
+hexerfactory() = (opener = openerfactory(); fn -> bytes2hex(opener(fn)))
 
-function file2hex(filename::AbstractString)
-    hexer = hexerfactory()
-    return hexer(filename)
-end
+function file2hex(filename::AbstractString) end
+file2hex(filename::AbstractString) = (hexer = hexerfactory(); hexer(filename))
 
 end
