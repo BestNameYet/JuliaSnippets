@@ -17,7 +17,4 @@ hexerfactory() = (opener = openerfactory(); fn -> bytes2hex(opener(fn)))
 function file2hex end
 file2hex(filename::AbstractString) = (hexer = hexerfactory(); hexer(filename))
 
-
-y = file2hex("test.txt")
-
 end
