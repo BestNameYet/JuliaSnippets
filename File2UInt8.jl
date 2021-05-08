@@ -1,6 +1,6 @@
-module File2Hex
+module File2UInt8
 
-function file2hex(filename::AbstractString)
+function file2uint8(filename::AbstractString)
     filesize = stat.(filename).size
     filearr = Array{UInt8, 1}(undef, filesize)
     io = open(filename, "r")
