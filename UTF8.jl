@@ -10,7 +10,8 @@ end
 
 const lookuptable = let f, g, h, pairs, dict
     f(x) = string(x, base=16, pad=2)
-    g(x) = codepoint(x); h(x) = tuple(f(g(x)), x)
+    g(x) = codepoint(x)
+    h(x) = tuple(f(g(x)), x)
     pairs = h.(printables)
     dict = Dict(pairs)
 end
