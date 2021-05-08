@@ -13,7 +13,7 @@ const lookuptable = let f, g, h, pairs, dict
     g(x) = codepoint(x)
     h(x) = tuple(f(g(x)), x)
     pairs = h.(printables)
-    dict = Dict(pairs)
+    Dict(pairs)
 end
 
 function testhex(key)
