@@ -1,6 +1,6 @@
-module UTF8
+module UInt8
 
-export testhex
+export getascii
 
 const printables = let
     [1:128;] |>
@@ -15,7 +15,7 @@ const lookuptable = let g, h, pairs, dict
     Dict(pairs)
 end
 
-function testhex(key)
+function getascii(key)
     get(lookuptable, key, UInt8(0x00))
 end
 
