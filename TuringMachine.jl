@@ -9,20 +9,20 @@ function A(tape)
         return "halt"
     end
     
-  #(0, A, 1, B)
+  #(0, A, 1, right, B)
   if tape[address] == 0
     tape[address] = 1
     global address += 1
     return B
-  #(1, A, 2, A)
+  #(1, A, 2, left, A)
   elseif tape[address] == 1
     tape[address] = 2
-    global address += 1
+    global address -= 1
     return A
-   #(2, A, 1, A)
+   #(2, A, 1, left, A)
    elseif tape[address] == 2
     tape[address] = 1
-    global address += 1
+    global address -= 1
     return A
    end
 end
@@ -31,17 +31,17 @@ function B(tape)
     if address < 1 || address > length(tape)
         return "halt"
     end
-  #(0, B, 2, A)
+  #(0, B, 2, left, A)
   if tape[address] == 0
     tape[address] = 2
-    global address += 1
+    global address -= 1
     return A
-  #(1, B, 2, B)
+  #(1, B, 2, right, B)
   elseif tape[address] == 1
     tape[address] = 2
     global address += 1
     return B
-   #(2, B, 0, A)
+   #(2, B, 0, right, A)
    elseif tape[address] == 2
     tape[address] = 0
     global address += 1
