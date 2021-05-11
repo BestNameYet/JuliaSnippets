@@ -40,5 +40,12 @@ while dog != dogstring
 end
 println("dog = $dog")
 
+function isthistrue(this)
+    if this
+        println("This is true.")
+    else
+        println("This is not true.")
+    end
+end
 
 end
