@@ -28,14 +28,15 @@ for i in 1:10
     end
 end
 
+const dogstring = "dog"
+const dogarr = ["d", "o", "g"]
+
 dog = ""
 i = 1
-println("dog = $dog")
-dogarray = ["d", "o", "g"]
-println(dogarray)
-while dog != "dog"
-    dog = "$dog*dogarray[i]"
-    i += 1
+while dog != dogstring
+    println("$dogstring = $dog")
+    global dog = "$(dog*dogarr[i])"
+    global i += 1
 end
 println("dog = $dog")
 
