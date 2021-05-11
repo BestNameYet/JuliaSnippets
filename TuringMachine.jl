@@ -2,7 +2,7 @@ module TuringMachine.jl
 
 using Random
 tape = rand(0:1,150)
-address = 30
+address = 1
 
 function A(tape)
     if address < 1 || address > length(tape)
