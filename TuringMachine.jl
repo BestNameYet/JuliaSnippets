@@ -1,61 +1,44 @@
 module TuringMachine.jl
 
-using Random
-tape = rand(0:1,150)
-address = 1
-
-function A(tape)
-    if address < 1 || address > length(tape)
-        return "halt"
-    end
-    
+function A(tapevalue)
   #(0, A, 1, right, B)
-  if tape[address] == 0
-    tape[address] = 1
-    global address += 1
-    return B
+  if tapevalue == 0
+  return (1, moveright, B)
   #(1, A, 2, left, A)
-  elseif tape[address] == 1
-    tape[address] = 2
-    global address -= 1
-    return A
+  elseif tapevalue == 1
+  return (2, moveleft, A)
    #(2, A, 1, left, A)
-   elseif tape[address] == 2
-    tape[address] = 1
-    global address -= 1
-    return A
+   elseif tapevalue == 2
+   return (1, moveleft, A)
    end
 end
 
-function B(tape)
-    if address < 1 || address > length(tape)
-        return "halt"
-    end
-  #(0, B, 2, left, A)
-  if tape[address] == 0
-    tape[address] = 2
-    global address -= 1
-    return A
+function B(tapevalue)
+   #(0, B, 2, left, A)
+  if tapevalue == 0
+  return (2, moveleft, A)
   #(1, B, 2, right, B)
-  elseif tape[address] == 1
-    tape[address] = 2
-    global address += 1
-    return B
+  elseif tapevalue == 1
+   return (2, moveright, B)
    #(2, B, 0, right, A)
-   elseif tape[address] == 2
-    tape[address] = 0
-    global address += 1
-    return A
-   end
+   elseif tapevalue == 2
+    return (0, moveright, A)
+    end
 end
 
-x = A
-println("I: $tape")
+moveleft(address) = address - 1
+moveright(address) = address + 1
 
-while x != "halt"
-    global x = x(tape)
+function runmachine(;state, tape, address)
+    while address < 1 || address > length(tape)
+        sym, move, st = state(tape[address])
+        move(address)
+    end
+        
 end
 
-println("H: $tape")
+
+
+
 
 end
