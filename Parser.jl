@@ -11,7 +11,7 @@ function findtoken(bits::Array{Uint8})
   end
 end
 
-function scanfortoken(index, bits)
+function scanfortoken(index::Int, bits::AbstractArray)
   maybeascii = bits[index, index+Int(bits[index])]
   return isascii(maybestring) ? String(maybeascii) : nothing
 end
