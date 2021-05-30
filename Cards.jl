@@ -17,7 +17,7 @@ struct Queen <: AbstractRank end
 struct Jack <: AbstractRank end
 
 function makeInstance(singletontype::Union{AbstractRank, AbstractSuit})
-return singletype()
+return singletontype()
 end
 
 struct Card{R<:AbstractRank, S<:AbstractSuit}
