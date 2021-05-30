@@ -23,7 +23,10 @@ end
 struct Card{R<:AbstractRank, S<:AbstractSuit}
 suit::S
 rank::R
-Card(_suit, _rank) = new(_suit=makeInstance(NoSuit), _rank=makeInstance(NoRank); rank=_rank, suit=_suit)
+function Card(_suit::AbstractSuit=makeInstance(NoSuit), _rank::AbstractRank=makeInstance(NoRank); rank=_rank, suit=_suit)
+return new(suit, rank)
+end
+
 end
 
 
