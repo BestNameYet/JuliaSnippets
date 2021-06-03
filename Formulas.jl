@@ -28,18 +28,54 @@ function flowrateLiquid(;inletPressure::typeof(1.0u"psi"), outletPressure::typeo
     return Q;
 end
 
+function flowcoeffecientGas(;inletPressure::typeof(1.0u"psi"), outletPressure::typeof(1.0u"psi"), inletTemperature::typeof(1.0u"°F"), specificGravity::typeof(1.0), volumetricflowrate::typeof(1.0u"scfh"))::typeof(1.0u"sqrt(Ra)*scfh*(1/psi)")
+    P0 = inletPressure
+    P1 = outletPressure
+    if(P0≥2*P1) return criticalflowcoeffecient(;inletPressure, inletTemperature, specificGravity, volumetricflowrate) end
+    return subcriticalflowcoeffecient(;inletPressure, outletPressure, inletTemperature, specificGravity, volumetricflowrate)
+end
+
+function criticalflowcoeffecient(;inletPressure::typeof(1.0u"psi"), inletTemperature::typeof(1.0u"°F"), specificGravity::typeof(1.0), volumetricflowrate::typeof(1.0u"scfh"), scalingfactor::typeof(1.0) = 816.0)::typeof(1.0u"sqrt(Ra)*scfh*(1/psi)")
+    scalar = scalingfactor
+    Q = volumetricflowrate
+    T0 = uconvert(u"Ra",inletTemperature)
+    P0 = inletPressure
+    SG = specificGravity
+    radicand = SG*T0
+    upper = sqrt(radicand)
+    lower = scalar*P0
+    @show Cv = Q*upper/lower
+    return Cv
+end
+
+function subcriticalflowcoeffecient(;inletPressure::typeof(1.0u"psi"), outletPressure::typeof(1.0u"psi"), inletTemperature::typeof(1.0u"°F"), specificGravity::typeof(1.0), volumetricflowrate::typeof(1.0u"scfh"), scalingfactor::typeof(1.0) = 962.0)::typeof(1.0u"sqrt(Ra)*scfh*(1/psi)")
+    scalar = scalingfactor
+    Q = volumetricflowrate
+    T0 = uconvert(u"Ra",inletTemperature)
+    P0 = inletPressure
+    P1 = outletPressure
+    SG = specificGravity
+    upper = SG*T0
+    lower = (^(P0,2)-^(P1,2))
+    radicand = upper/lower
+    @show Cv = (Q/scalar)*sqrt(radicand)
+    return Cv
+end
+
 inletP = 100.0u"psi"
-outletP = 99.0u"psi"
+outletP = 60.0u"psi"
+inletT = 100.0u"°F"
 SG = 1.0
-rate = 50.0u"gpm"
-const Cv = 50.0u"gpm*(1/sqrt(psi))"
+liquidrate = 50.0u"gpm"
+gasrate = 1000.0u"scfh"
+Cv = 50.0u"gpm*(1/sqrt(psi))"
 
 coeffecientTuple = begin
     (
         inletPressure = inletP,
         outletPressure = outletP,
         specificGravity = SG,
-        volumetricflowrate = rate
+        volumetricflowrate = liquidrate
     );
 end
 
@@ -53,8 +89,20 @@ flowrateTuple = begin
 
 end
 
+gasflowrateTuple = begin
+    (
+        inletPressure = inletP,
+        outletPressure = outletP,
+        specificGravity = SG,
+        volumetricflowrate = gasrate,
+        inletTemperature = inletT
+
+    );
+
+end
+
 @show flowcoeffecientLiquid(;coeffecientTuple...)
 @show flowrateLiquid(;flowrateTuple... )
-
+@show flowcoeffecientGas(;gasflowrateTuple...)
 
 end
